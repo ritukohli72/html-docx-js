@@ -1,82 +1,250 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>HTML-DOCX test</title>
-  <script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
-  <script src="vendor/FileSaver.js"></script>
-  <script src="../build/html-docx.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
+<style>
+
+
+  table {
+     font-family:"Open Sans",Helvetica,Arial,sans-serif;
+     font-weight:lighter;
+     width:100%;
+     margin:100px auto;
+     clear:both;
+     text-align: left
+     }
+#clients {
+  border:1px solid grey;
+  width: 10px;
+}
+
+#policies {
+  border-right: 1px solid grey;
+  border-bottom: 1px solid grey;
+  background-color: #ededed;
+}
+
+#claims {
+  border-right: 1px solid grey;
+  border-bottom: 1px solid grey;
+  background-color: #d1d1d1;
+}
+td{
+  margin:20px;
+  padding-left: 50px;
+}
+
+table, tr{
+  margin: 50px;
+  padding: 5px;
+  border-top:none;
+}
+
+.vl {
+    border-left: 6px solid grey;
+    height: 500px;
+}
+
+#blankline
+{
+   padding: 0px;
+   color: white;
+   font-size: 25px;
+   text-align="left";
+   border-top:none;
+}
+
+body {
+  background-color:#fafafa
+}
+
+td#btton {
+  border-color:red !important;
+  }
+
+td {
+  width: 10px !important;
+}
+table, td {
+    border-top:none;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    font-weight: lighter;
+  }
+
+hr {
+  color: white;
+}
+
+button{
+  border-color: grey;
+  border-radius: 25px;
+  background-color: grey;
+}
+
+}
+
+</style>
+
 <body>
-  <p>Enter/paste your document here:</p>
-  <textarea id="content" cols="60" rows="10">
-    <p>We all live in a yellow submarine, yellow submarine, yellow submarine, yellow submarine</p>
-    <p>Images can also be exported if you source them as base64 DATA URI.</p>
-    <img src="cat.jpg">
-  </textarea>
-  <div class="page-orientation">
-    <span>Page orientation:</span>
-    <label><input type="radio" name="orientation" value="portrait" checked>Portrait</label>
-    <label><input type="radio" name="orientation" value="landscape">Landscape</label>
+
+  <div id="div" class="container">
+    <table id="form" class="table table-striped table-hover"></table>
+
+      <script >
+      const clients = [{"clientid":1,"fname":"Mamta","sname":"Swaroop"},
+       {"clientid":2,"fname":"Mamta","sname":"S"},
+       {"clientid":3,"fname":"Maria","sname":"Swaroop"},
+       {"clientid":4,"fname":"Mam","sname":"Swaroop"},
+       {"clientid":5,"fname":"Mam","sname":"Swa"},
+       {"clientid":6,"fname":"Mamta","sname":"Swa"},
+       {"clientid":7,"fname":"Meena","sname":"S",},
+       {"clientid":8,"fname":"Mamta","sname":"Rtrtt"},
+       {"clientid":9,"fname":"Reena","sname":"Swaroop"},
+       {"clientid":10,"fname":"MAMTA","sname":"Swaroop"},
+       {"clientid":11,"fname":"Mamta","sname":"SWAROOP"},
+       {"clientid":12,"fname":"MAMTA","sname":"SWAROOP"},
+       {"clientid":13,"fname":"Ritu","sname":"Kohli"},
+        {"clientid":14,"fname":"Mamta","sname":"S"},
+        {"clientid":15,"fname":"M","sname":"Swaroop"},
+        {"clientid":16,"fname":"Mam","sname":"Swaroop"},
+        {"clientid":17,"fname":"Mam","sname":"Swa"}];
+
+      const policies = [
+        {"policyNumber":1,"clientid":1,"vehicleMake":"Zen","vehicleModel":"Maruti","vehicleType":"Big Car","year":"2050"},
+        {"policyNumber":1,"clientid":2,"vehicleMake":"Honda City","vehicleModel":"Xing","vehicleType":"Big Car","year":"2010"},
+        {"policyNumber":2,"clientid":2,"vehicleMake":"Santro","vehicleModel":"Xing","vehicleType":"Small Car","year":"2010"},
+        {"policyNumber":3,"clientid":3,"vehicleMake":"i20","vehicleModel":"Xing","vehicleType":"Medium Car","year":"2010"},
+        {"policyNumber":4,"clientid":6,"vehicleMake":"Honda City","vehicleModel":"Xing","vehicleType":"Big Car","year":"2010"},
+        {"policyNumber":5,"clientid":8,"vehicleMake":"Honda City","vehicleModel":"Xing","vehicleType":"Big Car","year":"2010"},
+        {"policyNumber":6,"clientid":9,"vehicleMake":"Honda City","vehicleModel":"Xing","vehicleType":"Small Car","year":"2010"},
+        {"policyNumber":7,"clientid":9,"vehicleMake":"Honda City","vehicleModel":"Xing","vehicleType":"Small Car","year":"2010"},
+        {"policyNumber":8,"clientid":9,"vehicleMake":"Honda City","vehicleModel":"Xing","vehicleType":"Small Car","year":"2010"},
+        {"policyNumber":9,"clientid":9,"vehicleMake":"Honda City","vehicleModel":"Xing","vehicleType":"Small Car","year":"2010"},
+        {"policyNumber":10,"clientid":10,"vehicleMake":"Santro","vehicleModel":"Xing","vehicleType":"Small Car","year":"2010"},
+        {"policyNumber":11,"clientid":10,"vehicleMake":"Safari","vehicleModel":"Xing","vehicleType":"SUV","year":"2010"},
+        {"policyNumber":12,"clientid":9,"expiryDate":"2017-21-01","policyStatus":"Active","vehicleMake":"Swift ","vehicleModel":"Xing","vehicleType":"Small Car","year":"2010"}];
+
+      const claims = [
+        {"claimid":1,"clientid":2,"policyNumber":1,"claimRegistration":"xxxx0902","claimIncidentDate":"11-02-2010","claimAmount":"2500"},
+        {"claimid":2,"clientid":2,"policyNumber":2,"claimRegistration":"xxxx0903","claimIncidentDate":"11-02-2015","claimAmount":"2500"},
+        {"claimid":3,"clientid":3,"policyNumber":3,"claimRegistration":"xxxx0001","claimIncidentDate":"11-02-2010","claimAmount":"2500"},
+        {"claimid":4,"clientid":9,"policyNumber":6,"claimRegistration":"xxxx0999","claimIncidentDate":"11-02-2010","claimAmount":"2500"},
+        {"claimid":5,"clientid":9,"policyNumber":7,"claimRegistration":"xxxx8888","claimIncidentDate":"11-02-2010","claimAmount":"2500"},
+        {"claimid":6,"clientid":9,"policyNumber":8,"claimRegistration":"xxxx7777","claimIncidentDate":"11-02-2010","claimAmount":"2500"},
+        {"claimid":7,"clientid":9,"policyNumber":9,"claimRegistration":"xxxx0000","claimIncidentDate":"11-02-2010","claimAmount":"2500"}
+        ];
+
+      var showpolicies=true;
+        console.log(clients);
+        let client=clients[8];
+        console.log(client);
+        createTable(clients);
+
+
+      function createNode(element) {
+           return document.createElement(element);
+       }
+
+      function append(parent, el) {
+         return parent.appendChild(el);
+       }
+
+      function createTable(clients)
+           {
+             var table = document.getElementById("form");
+             console.log(table);
+             for (var i=0; i< clients.length; i++)
+             {
+              tr=createNode('tr');
+              append(table,tr);
+              tr.id=`clients${i}`;
+
+
+              for (var x in clients[i]) {
+              td=createNode('td');
+              td.id = "clients";
+              td.innerHTML = `${x} : ${clients[i][x]}`;
+              append(tr,td);
+            }
+            td=createNode('td');
+            td.id="btton";
+            btn=document.createElement("BUTTON");
+            btn.id=`btton${i}`;
+            $(btn).text('+');
+
+            td.appendChild(btn);
+            var att = document.createAttribute("data-toggle");       // Create a "class" attribute
+            att.value = "collapse";                           // Set the value of the class attribute
+            btn.setAttributeNode(att);
+
+            var att = document.createAttribute("data-target");       // Create a "class" attribute
+            att.value = `#div${i}`;                           // Set the value of the class attribute
+            btn.setAttributeNode(att);
+            append(tr,td);
+
+            div=createNode('div');
+            var att = document.createAttribute("class");       // Create a "class" attribute
+            att.value = "collapse-in";                           // Set the value of the class attribute
+            div.setAttributeNode(att);
+            append(table,div);
+            div.id=`div${i}`;
+
+
+            for (j=0;j<policies.length;j++)
+            {
+             if (policies[j].clientid===clients[i].clientid)
+             {
+             tr=createNode('tr');
+             append(div,tr);
+             td=createNode('td');
+             td.innerHTML = 'policies>';
+
+             td.id="blankline "
+             append(tr,td);
+             for (y in policies[j]) {
+             td=createNode('td');
+             td.innerHTML = `${policies[j][y]}`;
+             append(tr,td);
+             td.id="policies"
+             }
+
+             for (k=0; k<claims.length; k++)
+             {
+             if ((claims[k].policyNumber===policies[j].policyNumber) && (claims[k].clientid===policies[j].clientid))
+             {
+             tr=createNode('tr');
+             append(table,tr);
+             td=createNode('td');
+             td.innerHTML = '';
+             td.id="blankline"
+             append(tr,td);
+             td=createNode('td');
+             td.innerHTML = 'Claims>';
+             append(tr,td);
+             for (z in claims[k]) {
+             td=createNode('td');
+             td.innerHTML = `${claims[k][z]}`;
+             append(tr,td);
+             td.id = "claims";
+             }
+           }
+         }
+
+         }
+          }
+
+
+        }
+      }
+
+      </script>
+
   </div>
-  <button id="convert">Convert</button>
-  <div id="download-area"></div>
-
-  <script>
-    tinymce.init({
-      selector: '#content',
-      plugins: [
-        "advlist autolink lists link image charmap print preview anchor",
-        "searchreplace visualblocks code fullscreen fullpage",
-        "insertdatetime media table contextmenu paste"
-      ],
-      toolbar: "insertfile undo redo | styleselect | bold italic | " +
-        "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | " +
-        "link image"
-    });
-    document.getElementById('convert').addEventListener('click', function(e) {
-      e.preventDefault();
-      convertImagesToBase64()
-      // for demo purposes only we are using below workaround with getDoc() and manual
-      // HTML string preparation instead of simple calling the .getContent(). Becasue
-      // .getContent() returns HTML string of the original document and not a modified
-      // one whereas getDoc() returns realtime document - exactly what we need.
-      var contentDocument = tinymce.get('content').getDoc();
-      var content = '<!DOCTYPE html>' + contentDocument.documentElement.outerHTML;
-      var orientation = document.querySelector('.page-orientation input:checked').value;
-      var converted = htmlDocx.asBlob(content, {orientation: orientation});
-
-      saveAs(converted, 'test.docx');
-
-      var link = document.createElement('a');
-      link.href = URL.createObjectURL(converted);
-      link.download = 'document.docx';
-      link.appendChild(
-        document.createTextNode('Click here if your download has not started automatically'));
-      var downloadArea = document.getElementById('download-area');
-      downloadArea.innerHTML = '';
-      downloadArea.appendChild(link);
-    });
-
-    function convertImagesToBase64 () {
-      contentDocument = tinymce.get('content').getDoc();
-      var regularImages = contentDocument.querySelectorAll("img");
-      var canvas = document.createElement('canvas');
-      var ctx = canvas.getContext('2d');
-      [].forEach.call(regularImages, function (imgElement) {
-        // preparing canvas for drawing
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        canvas.width = imgElement.width;
-        canvas.height = imgElement.height;
-
-        ctx.drawImage(imgElement, 0, 0);
-        // by default toDataURL() produces png image, but you can also export to jpeg
-        // checkout function's documentation for more details
-        var dataURL = canvas.toDataURL();
-        imgElement.setAttribute('src', dataURL);
-      })
-      canvas.remove();
-    }
-  </script>
 </body>
 </html>
